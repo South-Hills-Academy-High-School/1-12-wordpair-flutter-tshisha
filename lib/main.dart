@@ -50,6 +50,39 @@ class MyAppState extends ChangeNotifier {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+        body: Row(
+      children: [
+        SafeArea(
+          child: NavigationRail(
+            extended: false,
+            destinations: [
+              NavigationRailDestination(
+                icon: Icon(Icons.home),
+                label: Text('Home'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.favorite),
+                label: Text('Favorites'),
+              ),
+            ],
+            selectedIndex: 0,
+            onDestinationSelected: (value) {},
+          ),
+        ),
+        Expanded(
+          child: Container(
+            child: GeneratorPage(),
+          ),
+        ),
+      ],
+    ));
+  }
+}
+
+class GeneratorPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
 
@@ -59,35 +92,32 @@ class MyHomePage extends StatelessWidget {
     } else {
       icon = Icons.favorite_border;
     }
-
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('A random idea:'),
-            BigCard(pair: pair),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    appState.toggleFavorite();
-                  },
-                  icon: Icon(icon),
-                  label: Text('Like'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    print('Hello');
-                    appState.getNext();
-                  },
-                  child: Text('Next'),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('A random idea:'),
+          BigCard(pair: pair),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  appState.toggleFavorite();
+                },
+                icon: Icon(icon),
+                label: Text('Like'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  print('Hello');
+                  appState.getNext();
+                },
+                child: Text('Next'),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
